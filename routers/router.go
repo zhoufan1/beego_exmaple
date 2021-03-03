@@ -1,6 +1,7 @@
 package routers
 
 import (
+	"beego_example/controllers"
 	"beego_example/controllers/user"
 	"encoding/json"
 	"github.com/beego/beego/v2/core/logs"
@@ -31,5 +32,6 @@ func init() {
 			),
 		),
 	)
+	web.ErrorController(&controllers.ErrorController{})
 	web.AddNamespace(ns)
 }

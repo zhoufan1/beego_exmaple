@@ -12,3 +12,7 @@ type BaseController struct {
 func (c *BaseController) Prepare() {
 	logs.Info("request url :", c.Ctx.Request.URL)
 }
+
+func (c *BaseController) Finish() {
+	c.ServeJSON(true)
+}

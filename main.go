@@ -5,6 +5,7 @@ import (
 	_ "beego_example/routers"
 	"beego_example/utils/mysql_utils"
 	"fmt"
+	"github.com/beego/beego/v2/client/orm"
 	"github.com/beego/beego/v2/core/logs"
 	"github.com/beego/beego/v2/server/web"
 	"path/filepath"
@@ -18,16 +19,19 @@ func main() {
 	//初始化数据库
 	DbInit()
 
-}
-
-func DbInit() {
 	logs.Info("project  name start ... ", web.BConfig.AppName)
 	logs.Info("project  profile : ", web.BConfig.RunMode)
 	web.BConfig.WebConfig.DirectoryIndex = true
 	web.BConfig.WebConfig.StaticDir["swagger"] = "/swagger"
 	web.Run()
+}
+
+func DbInit() {
 	logs.Info("初始化 mysql ")
 	mysql_utils.Register(constants.DbUrl, constants.DbMaxIdle, constants.DbMaxOpen, "default")
+	//开启自动创表
+	orm.RunSyncdb("default", false, true)
+	orm.Debug = true
 }
 
 func LogInit() {

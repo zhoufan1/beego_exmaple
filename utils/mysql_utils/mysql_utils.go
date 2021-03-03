@@ -3,6 +3,8 @@ package mysql_utils
 import (
 	"fmt"
 	"github.com/beego/beego/v2/client/orm"
+	"github.com/beego/beego/v2/core/logs"
+	_ "github.com/go-sql-driver/mysql"
 )
 
 func Register(url string, maxOpen, maxIdle int, alias string) {
@@ -16,5 +18,5 @@ func Register(url string, maxOpen, maxIdle int, alias string) {
 	}
 	orm.SetMaxIdleConns(alias, maxIdle)
 	orm.SetMaxOpenConns(alias, maxOpen)
-	fmt.Printf("%v mysql init success .", alias)
+	logs.Info("%v mysql init success .", alias)
 }
