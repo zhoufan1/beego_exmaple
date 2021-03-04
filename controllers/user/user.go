@@ -10,11 +10,17 @@ import (
 	"github.com/beego/beego/v2/core/logs"
 )
 
+// USER-API
 type Controller struct {
 	controllers.BaseController
 }
 
-// @router /login  [get]
+// @Title Login
+// @Description 登录测试
+// @Param	userName query string true "用户名"
+// @Param	userName query string true "用户密码"
+// @Success 200 {object} base.Model
+// @router /login [get]
 func (u *Controller) Login() {
 	userName := u.GetString("userName")
 	userPass := u.GetString("userPass")
@@ -24,23 +30,31 @@ func (u *Controller) Login() {
 	u.Data["json"] = base.ResponseSuccess(user)
 }
 
-// @router /save  [post]
+// @Title Save
+// @Description 保存
+// @Param	body body model.User true "保存参数"
+// @Success 200 {object} base.Model
+// @router /save [post]
 func (u *Controller) Save() {
 	var user model.User
 	if err := json.Unmarshal(u.Ctx.Input.RequestBody, &user); err == nil {
-		err := service.SaveOrUpdate(&user)
+		id, err := service.SaveOrUpdate(&user)
 		if err != nil {
 			u.Data["json"] = base.ResponseFailure(-1, "添加失败")
 			return
 		}
-		u.Data["json"] = base.ResponseSuccess(nil)
+		u.Data["json"] = base.ResponseSuccess(id)
 	} else {
 		logs.Error(err.Error())
 		u.Data["json"] = base.ResponseFailure(-1, "参数缺失")
 	}
 }
 
-// @router /queryAll  [post]
+// @Title QueryAll
+// @Description 根据条件分页查询
+// @Param	body body request.UserPagerRequest true "查询条件"
+// @Success 200 {object} base.Model
+// @router /queryAll [post]
 func (u *Controller) QueryAll() {
 	var userPagerRequest request.UserPagerRequest
 	if err := json.Unmarshal(u.Ctx.Input.RequestBody, &userPagerRequest); err == nil {
@@ -62,7 +76,11 @@ func (u *Controller) QueryAll() {
 	}
 }
 
-// @router /queryById  [get]
+// @Title QueryById
+// @Description 根据id查询
+// @Param	id query true int "主键"
+// @Success 200 {object} base.Model
+// @router /queryById [get]
 func (u *Controller) QueryById() {
 	id, err := u.GetInt("id")
 	if err != nil || id <= 0 {

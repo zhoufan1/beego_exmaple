@@ -15,8 +15,13 @@ func (e *ErrorController) Prepare() {
 }
 
 func (e *ErrorController) Finish() {
-	e.Ctx.ResponseWriter.Status = 200
-	e.ServeJSON(true)
+	path := e.ViewPath
+	logs.Info("path :", path)
+	if len(path) <= 0 {
+		e.Ctx.ResponseWriter.Status = 200
+		e.ServeJSON(true)
+	}
+
 }
 func (e *ErrorController) Error401() {
 	e.Data["json"] = base.ResponseFailure(401, "未认证，请登录")

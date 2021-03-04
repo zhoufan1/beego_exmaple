@@ -22,14 +22,15 @@ func (u *User) TableName() string {
 	return constants.UserTable
 }
 
-func AddUser(u *User) error {
+func AddUser(u *User) (int64, error) {
 	o := orm.NewOrm()
-	_, err := o.InsertOrUpdate(u, u.UserName)
+	id, err := o.InsertOrUpdate(u, u.UserName)
+	logs.Info("data : ", id)
 	if err != nil {
 		logs.Error("Insert Or Update ", err)
-		return err
+		return 0, err
 	}
-	return nil
+	return id, nil
 }
 
 func QueryOne(id int) (user User, err error) {

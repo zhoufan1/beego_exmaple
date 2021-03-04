@@ -10,9 +10,9 @@ func QueryById(id int) (model.User, error) {
 	return one, err
 }
 
-func SaveOrUpdate(u *model.User) error {
-	err := model.AddUser(u)
-	return err
+func SaveOrUpdate(u *model.User) (int64, error) {
+	id, err := model.AddUser(u)
+	return id, err
 }
 
 func QueryAll(pager base.Pager, user *model.User) ([]model.User, error) {

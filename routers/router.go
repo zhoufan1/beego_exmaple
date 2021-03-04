@@ -1,3 +1,7 @@
+// @APIVersion 1.0.0
+// @Title EXAMPLE-USER API
+// @Description beego 用例
+// @Contact wodeer33@gmail.com
 package routers
 
 import (
